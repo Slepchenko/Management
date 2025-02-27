@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 public class DocumentsListController {
     @FXML
@@ -51,17 +52,17 @@ public class DocumentsListController {
 
     @FXML
     private void goToInvoiceForm(ActionEvent event) {
-
+        changeForm(createInvoiceForm());
     }
 
     @FXML
     private void goToPaymentForm(ActionEvent event) {
-
+        changeForm(createPaymentForm());
     }
 
     @FXML
     private void goToPaymentRequestForm(ActionEvent event) {
-
+        changeForm(createPaymentRequestForm());
     }
 
     @FXML
@@ -84,5 +85,45 @@ public class DocumentsListController {
         leftContainer.getChildren().add(form);
     }
 
+    private VBox createInvoiceForm() {
+        VBox form = new VBox(10);
+        form.getChildren().addAll(
+                new Label("Номер:"), new TextField(),
+                new Label("Дата:"), new DatePicker(),
+                new Label("Пользователь:"), new TextField(),
+                new Label("Сумма:"), new TextField(),
+                new Label("Валюта:"), new TextField(),
+                new Label("Курс Валюты:"), new TextField(),
+                new Label("Товар:"), new TextField(),
+                new Label("Количество:"), new TextField()
+        );
+        return form;
+    }
 
+    private VBox createPaymentForm() {
+        VBox form = new VBox(10);
+        form.getChildren().addAll(
+                new Label("Номер:"), new TextField(),
+                new Label("Дата:"), new DatePicker(),
+                new Label("Пользователь:"), new TextField(),
+                new Label("Сумма:"), new TextField(),
+                new Label("Сотрудник:"), new TextField()
+        );
+        return form;
+    }
+
+    private VBox createPaymentRequestForm() {
+        VBox form = new VBox(10);
+        form.getChildren().addAll(
+                new Label("Номер:"), new TextField(),
+                new Label("Дата:"), new DatePicker(),
+                new Label("Пользователь:"), new TextField(),
+                new Label("Контрагент:"), new TextField(),
+                new Label("Сумма:"), new TextField(),
+                new Label("Валюта:"), new TextField(),
+                new Label("Курс Валюты:"), new TextField(),
+                new Label("Комиссия:"), new TextField()
+        );
+        return form;
+    }
 }
