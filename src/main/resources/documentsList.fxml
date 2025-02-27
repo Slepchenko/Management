@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.layout.Region?>
+<?import javafx.geometry.Insets?>
+<AnchorPane prefHeight="600.0" prefWidth="530.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.trainee.slepchenko.management.controller.DocumentsListController">
+
+    <StackPane fx:id="leftContainer"
+               AnchorPane.topAnchor="10"
+               AnchorPane.leftAnchor="10"
+               AnchorPane.bottomAnchor="10"
+               AnchorPane.rightAnchor="180">
+        <ListView fx:id="documentsList" />
+    </StackPane>
+
+    <VBox spacing="10"
+          AnchorPane.topAnchor="10"
+          AnchorPane.bottomAnchor="10"
+          AnchorPane.rightAnchor="10"
+          prefWidth="160">
+
+        <Button fx:id="invoiceButton" onAction="#goToInvoiceForm" text="Накладная" maxWidth="Infinity"/>
+        <Button fx:id="paymentButton" onAction="#goToPaymentForm" text="Платёжка" maxWidth="Infinity"/>
+        <Button fx:id="paymentRequestButton" onAction="#goToPaymentRequestForm" text="Заявка на оплату" maxWidth="Infinity"/>
+        <Button fx:id="saveButton" onAction="#saveDocument" text="Сохранить" maxWidth="Infinity">
+            <VBox.margin>
+                <Insets top="15" />
+            </VBox.margin>
+        </Button>
+        <Button fx:id="loadButton" onAction="#loadDocument" text="Загрузить" maxWidth="Infinity"/>
+        <Button fx:id="deleteButton" onAction="#deleteSelected" text="Удалить" maxWidth="Infinity"/>
+        <Button fx:id="viewButton" onAction="#viewDocument" text="Просмотр" maxWidth="Infinity">
+            <VBox.margin>
+                <Insets top="15" />
+            </VBox.margin>
+        </Button>
+        <Region VBox.vgrow="ALWAYS" />
+        <Button fx:id="btnExit" onAction="#exitApp" text="Выход" maxWidth="Infinity"/>
+    </VBox>
+
+
+
+</AnchorPane>
