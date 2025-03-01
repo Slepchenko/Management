@@ -1,13 +1,13 @@
 package ru.trainee.slepchenko.management.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Data
-@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "payment")
 public class Payment {
@@ -23,15 +23,7 @@ public class Payment {
     @Column(name = "user_name")
     private String user;
 
-    private String contractor;
-
     private double amount;
 
-    private String currency;
-
-    @Column(name = "exchange_rate")
-    private double exchangeRate;
-
-    private double commission;
-
+    private String employee;
 }

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="10" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="ru.trainee.slepchenko.management.controller.InvoiceController"
+      prefWidth="400" prefHeight="500">
+
+    <Label text="Номер:"/>
+    <TextField fx:id="numberField"/>
+
+    <Label text="Дата:"/>
+    <DatePicker fx:id="dateField"/>
+
+    <Label text="Пользователь:"/>
+    <TextField fx:id="userField"/>
+
+    <Label text="Сумма:"/>
+    <TextField fx:id="amountField"/>
+
+    <Label text="Валюта:"/>
+    <TextField fx:id="currencyField"/>
+
+    <Label text="Курс Валюты:"/>
+    <TextField fx:id="exchangeRateField"/>
+
+    <Label text="Товар:"/>
+    <TextField fx:id="productField"/>
+
+    <Label text="Количество:"/>
+    <TextField fx:id="quantityField"/>
+
+    <Region VBox.vgrow="ALWAYS" />
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button fx:id="okButton" onAction="#onOk" text="ОК" prefWidth="100"/>
+        <Button fx:id="cancelButton" onAction="#onCancel" text="Отмена" prefWidth="100"/>
+    </HBox>
+
+</VBox>

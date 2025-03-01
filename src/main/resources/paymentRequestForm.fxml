@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="600.0" prefWidth="530.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ru.trainee.slepchenko.management.controller.PaymentRequestController">
+
+    <StackPane fx:id="leftContainer"
+               AnchorPane.topAnchor="10"
+               AnchorPane.leftAnchor="10"
+               AnchorPane.bottomAnchor="10"
+               AnchorPane.rightAnchor="180">
+
+        <VBox spacing="10">
+            <Label text="Номер:"/>
+            <TextField fx:id="numberField"/>
+
+            <Label text="Дата:"/>
+            <DatePicker fx:id="dateField"/>
+
+            <Label text="Пользователь:"/>
+            <TextField fx:id="userField"/>
+
+            <Label text="Контрагент:"/>
+            <TextField fx:id="contractorField"/>
+
+            <Label text="Сумма:"/>
+            <TextField fx:id="amountField"/>
+
+            <Label text="Валюта:"/>
+            <TextField fx:id="currencyField"/>
+
+            <Label text="Курс Валюты:"/>
+            <TextField fx:id="exchangeRateField"/>
+
+            <Label text="Комиссия:"/>
+            <TextField fx:id="commissionField"/>
+        </VBox>
+
+    </StackPane>
+
+    <VBox spacing="10"
+          AnchorPane.topAnchor="10"
+          AnchorPane.bottomAnchor="10"
+          AnchorPane.rightAnchor="10"
+          prefWidth="160">
+
+        <Region VBox.vgrow="ALWAYS" />
+        <Button fx:id="okButton" onAction="#onOk" text="ОК" maxWidth="Infinity"/>
+        <Button fx:id="cancelButton" onAction="#onCancel" text="Отмена" maxWidth="Infinity"/>
+
+    </VBox>
+
+</AnchorPane>
