@@ -4,44 +4,30 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<AnchorPane prefHeight="600.0" prefWidth="530.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="ru.trainee.slepchenko.management.controller.PaymentController">
+<VBox spacing="10" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="ru.trainee.slepchenko.management.controller.PaymentController"
+      prefWidth="400" prefHeight="500">
 
-    <StackPane fx:id="leftContainer"
-               AnchorPane.topAnchor="10"
-               AnchorPane.leftAnchor="10"
-               AnchorPane.bottomAnchor="10"
-               AnchorPane.rightAnchor="180">
+    <Label text="Номер:"/>
+    <TextField fx:id="numberField"/>
 
-        <VBox spacing="10">
-            <Label text="Номер:"/>
-            <TextField fx:id="numberField"/>
+    <Label text="Дата:"/>
+    <DatePicker fx:id="dateField"/>
 
-            <Label text="Дата:"/>
-            <DatePicker fx:id="dateField"/>
+    <Label text="Пользователь:"/>
+    <TextField fx:id="userField"/>
 
-            <Label text="Пользователь:"/>
-            <TextField fx:id="userField"/>
+    <Label text="Сумма:"/>
+    <TextField fx:id="amountField"/>
 
-            <Label text="Сумма:"/>
-            <TextField fx:id="amountField"/>
+    <Label text="Сотрудник:"/>
+    <TextField fx:id="employeeField"/>
 
-            <Label text="Сотрудник:"/>
-            <TextField fx:id="employeeField"/>
-        </VBox>
+    <Region VBox.vgrow="ALWAYS"/>
 
-    </StackPane>
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button fx:id="okButton" onAction="#onOk" text="ОК" prefWidth="100"/>
+        <Button fx:id="cancelButton" onAction="#onCancel" text="Отмена" prefWidth="100"/>
+    </HBox>
 
-    <VBox spacing="10"
-          AnchorPane.topAnchor="10"
-          AnchorPane.bottomAnchor="10"
-          AnchorPane.rightAnchor="10"
-          prefWidth="160">
-
-        <Region VBox.vgrow="ALWAYS" />
-        <Button fx:id="okButton" onAction="#onOk" text="ОК" maxWidth="Infinity"/>
-        <Button fx:id="cancelButton" onAction="#onCancel" text="Отмена" maxWidth="Infinity"/>
-
-    </VBox>
-
-</AnchorPane>
+</VBox>
