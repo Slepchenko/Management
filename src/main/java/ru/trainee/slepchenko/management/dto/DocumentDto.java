@@ -31,6 +31,7 @@ public class DocumentDto {
             for (Object doc : documents) {
                 writer.write(DocumentService.serializeDocument(doc));
                 writer.newLine();
+
             }
         } catch (IOException e) {
             e.printStackTrace();

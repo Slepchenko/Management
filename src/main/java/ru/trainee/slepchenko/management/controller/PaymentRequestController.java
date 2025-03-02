@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
+import ru.trainee.slepchenko.management.logic.AlertMessage;
 import ru.trainee.slepchenko.management.model.PaymentRequest;
 
 import java.time.LocalDate;
@@ -81,7 +82,7 @@ public class PaymentRequestController {
             }
             returnToDocumentsList(event);
         } catch (Exception e) {
-            showAlert("Ошибка", "Ошибка ввода", "Проверьте корректность введённых данных.");
+            AlertMessage.showAlert("Ошибка", "Ошибка ввода", "Проверьте корректность введённых данных.");
         }
     }
 
@@ -90,14 +91,6 @@ public class PaymentRequestController {
             leftContainer.getChildren().clear();
             leftContainer.getChildren().add(documentsListController.getDocumentsList());
         }
-    }
-
-    private void showAlert(String title, String header, String content) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(header);
-        alert.setContentText(content);
-        alert.showAndWait();
     }
 
 }
