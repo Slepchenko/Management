@@ -11,8 +11,8 @@
       spacing="10">
 
     <Label text="Информация:"/>
-    <Label fx:id="documentDetailsLabel" wrapText="true"/>
-<!--    <Button fx:id="backButton" text="Назад" onAction="#goBack"/>-->
+    <Label fx:id="documentDetailsLabel" style="-fx-font-size: 16px; -fx-font-weight: bold;" wrapText="true"/>
+
     <Region VBox.vgrow="ALWAYS" />
     <HBox spacing="10" alignment="CENTER_RIGHT">
         <Button fx:id="backButton" onAction="#goBack" text="Отмена" prefWidth="100"/>
