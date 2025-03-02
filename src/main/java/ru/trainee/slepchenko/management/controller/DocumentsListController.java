@@ -63,29 +63,11 @@ public class DocumentsListController {
 
     @FXML
     void goToInvoiceForm(ActionEvent event) {
-//        try {
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/invoiceForm.fxml"));
-//            Parent invoiceFormView = loader.load();
-//
-//            InvoiceController controller = loader.getController();
-//            controller.setDocumentsListController(this, leftContainer);
-//
-//            leftContainer.getChildren().clear();
-//            leftContainer.getChildren().add(invoiceFormView);
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
         loadForm("/invoiceForm.fxml", "INVOICE");
     }
 
     @FXML
     void goToPaymentForm(ActionEvent event) {
-//        try {
-//            loadForm("/invoiceForm.fxml", "PAYMENT");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
         loadForm("/paymentForm.fxml", "PAYMENT");
     }
 
@@ -115,7 +97,30 @@ public class DocumentsListController {
 
     public void addInvoiceToList(Invoice invoice) {
         if (documentsList != null) {
-            documentsList.getItems().add("Накладная от " + invoice.getDate() + " номер " + invoice.getNumber());
+            documentsList.getItems().add("Накладная от "
+                    + invoice.getDate()
+                    + " номер "
+                    + invoice.getNumber());
+            refreshDocumentsList();
+        }
+    }
+
+    public void addPaymentToList(Payment payment) {
+        if (documentsList != null) {
+            documentsList.getItems().add("Платёжка от "
+                    + payment.getDate()
+                    + " номер "
+                    + payment.getNumber());
+            refreshDocumentsList();
+        }
+    }
+
+    public void addPaymentRequestToList(PaymentRequest paymentRequest) {
+        if (documentsList != null) {
+            documentsList.getItems().add("Заявка на оплату от "
+                    + paymentRequest.getDate()
+                    + " номер "
+                    + paymentRequest.getNumber());
             refreshDocumentsList();
         }
     }

@@ -43,16 +43,8 @@ public class InvoiceController {
     @FXML
     private TextField userField;
 
-//    private ListView<String> invoiceListView;
-//
-//    public void setInvoiceListView(ListView<String> invoiceListView) {
-//        this.invoiceListView = invoiceListView;
-//    }
+    private DocumentsListController documentsListController;
 
-    private DocumentsListController documentsListController; // Ссылка на контроллер списка
-
-
-    // Передача контроллера списка
     public void setDocumentsListController(DocumentsListController controller, StackPane leftContainer) {
         this.documentsListController = controller;
         this.leftContainer = leftContainer;
@@ -61,7 +53,7 @@ public class InvoiceController {
 
     @FXML
     void onCancel(ActionEvent event) {
-//        closeWindow(event);
+        returnToDocumentsList(event);
     }
 
     @FXML
@@ -81,13 +73,9 @@ public class InvoiceController {
             invoice.setProduct(productField.getText());
             invoice.setQuantity(Double.parseDouble(quantityField.getText()));
 
-//            if (invoiceListView != null) {
-//                invoiceListView.getItems().add("Накладная от " + date + " номер " + number);
-//            }
             if (documentsListController != null) {
                 documentsListController.addInvoiceToList(invoice);
             }
-//            closeWindow(event);
             returnToDocumentsList(event);
         } catch (Exception e) {
             showAlert("Ошибка", "Ошибка ввода", "Проверьте корректность введённых данных.");
