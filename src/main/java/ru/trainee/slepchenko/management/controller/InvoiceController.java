@@ -50,7 +50,6 @@ public class InvoiceController {
         this.leftContainer = leftContainer;
     }
 
-
     @FXML
     void onCancel(ActionEvent event) {
         returnToDocumentsList(event);
@@ -59,17 +58,18 @@ public class InvoiceController {
     @FXML
     void onOk(ActionEvent event) {
         try {
-            String number = numberField.getText();
             LocalDate date = dateField.getValue();
             if (date == null) {
                 date = LocalDate.now();
             }
 
             Invoice invoice = new Invoice();
-            invoice.setNumber(number);
+            invoice.setNumber(numberField.getText());
             invoice.setDate(date);
             invoice.setUser(userField.getText());
             invoice.setAmount(Double.parseDouble(amountField.getText()));
+            invoice.setCurrency(currencyField.getText());
+            invoice.setExchangeRate(Double.parseDouble(exchangeRateField.getText()));
             invoice.setProduct(productField.getText());
             invoice.setQuantity(Double.parseDouble(quantityField.getText()));
 
@@ -89,7 +89,6 @@ public class InvoiceController {
         }
     }
 
-
     private void showAlert(String title, String header, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -97,11 +96,6 @@ public class InvoiceController {
         alert.setContentText(content);
         alert.showAndWait();
     }
-
-//    private void closeWindow(ActionEvent event) {
-//        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-//        stage.close();
-//    }
 
 }
 

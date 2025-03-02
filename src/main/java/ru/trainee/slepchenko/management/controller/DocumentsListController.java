@@ -4,18 +4,16 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import ru.trainee.slepchenko.management.dto.DocumentsDao;
+import ru.trainee.slepchenko.management.dto.DocumentDto;
 import ru.trainee.slepchenko.management.model.Invoice;
 import ru.trainee.slepchenko.management.model.Payment;
 import ru.trainee.slepchenko.management.model.PaymentRequest;
 
-import java.io.IOException;
+import java.io.File;
 import java.util.Objects;
 
 public class DocumentsListController {
@@ -49,7 +47,11 @@ public class DocumentsListController {
     @FXML
     private Button viewButton;
 
-    DocumentsDao documentsDao = new DocumentsDao();
+    private DocumentDto documentDto = new DocumentDto();
+
+    public DocumentDto getDocumentDto() {
+        return documentDto;
+    }
 
     @FXML
     void deleteSelected(ActionEvent event) {
@@ -78,12 +80,19 @@ public class DocumentsListController {
 
     @FXML
     void loadDocument(ActionEvent event) {
-
+        String filePath = chooseFileLoad();
+        if (filePath != null) {
+            documentDto.load(filePath);
+            updateDocumentsList();
+        }
     }
 
     @FXML
     void saveDocument(ActionEvent event) {
-
+        String filePath = chooseFileSave();
+        if (filePath != null) {
+            documentDto.save(filePath);
+        }
     }
 
     @FXML
@@ -96,6 +105,7 @@ public class DocumentsListController {
     }
 
     public void addInvoiceToList(Invoice invoice) {
+        documentDto.add(invoice);
         if (documentsList != null) {
             documentsList.getItems().add("Накладная от "
                     + invoice.getDate()
@@ -106,6 +116,7 @@ public class DocumentsListController {
     }
 
     public void addPaymentToList(Payment payment) {
+        documentDto.add(payment);
         if (documentsList != null) {
             documentsList.getItems().add("Платёжка от "
                     + payment.getDate()
@@ -116,6 +127,7 @@ public class DocumentsListController {
     }
 
     public void addPaymentRequestToList(PaymentRequest paymentRequest) {
+        documentDto.add(paymentRequest);
         if (documentsList != null) {
             documentsList.getItems().add("Заявка на оплату от "
                     + paymentRequest.getDate()
@@ -137,7 +149,6 @@ public class DocumentsListController {
             Object controller = loader.getController();
             if ("INVOICE".equals(documentType)) {
                 ((InvoiceController) controller).setDocumentsListController(this, leftContainer);
-
             }
             if ("PAYMENT".equals(documentType)) {
                 ((PaymentController) controller).setDocumentsListController(this, leftContainer);
@@ -151,6 +162,40 @@ public class DocumentsListController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
+
+    private void updateDocumentsList() {
+        documentsList.getItems().clear();
+
+        for (Object doc : documentDto.getDocuments()) {
+            if (doc instanceof Invoice invoice) {
+                documentsList.getItems().add("Накладная от " + invoice.getDate() + " номер " + invoice.getNumber());
+            }
+            if (doc instanceof Payment payment) {
+                documentsList.getItems().add("Платёжка от " + payment.getDate() + " номер " + payment.getNumber());
+            }
+            if (doc instanceof PaymentRequest paymentRequest) {
+                documentsList.getItems().add("Заявка на оплату от " + paymentRequest.getDate() + " номер " + paymentRequest.getNumber());
+            }
+        }
+    }
+
+    private String chooseFileSave() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Выберите папку");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Текстовые файлы", "*.txt"));
+
+        File selectedFile = fileChooser.showSaveDialog(new Stage());
+        return (selectedFile != null) ? selectedFile.getAbsolutePath() : null;
+    }
+
+    private String chooseFileLoad() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Выберите файл");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Текстовые файлы", "*.txt"));
+
+        File selectedFile = fileChooser.showOpenDialog(new Stage());
+        return (selectedFile != null) ? selectedFile.getAbsolutePath() : null;
+    }
+
 }
