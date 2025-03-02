@@ -13,9 +13,8 @@
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
 
-        <mapping class="ru.trainee.slepchenko.management.model.Task"/>
-        <mapping class="ru.trainee.slepchenko.management.model.User"/>
-        <mapping class="ru.trainee.slepchenko.management.model.Role"/>
-        <mapping class="ru.trainee.slepchenko.management.model.Category"/>
+        <mapping class="ru.trainee.slepchenko.management.model.Invoice"/>
+        <mapping class="ru.trainee.slepchenko.management.model.Payment"/>
+        <mapping class="ru.trainee.slepchenko.management.model.PaymentRequest"/>
     </session-factory>
 </hibernate-configuration>

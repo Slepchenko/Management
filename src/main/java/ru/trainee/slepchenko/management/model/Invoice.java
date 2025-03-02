@@ -21,6 +21,7 @@ public class Invoice {
 
     private LocalDate date;
 
+    @Column(name = "user_name")
     private String user;
 
     private double amount;

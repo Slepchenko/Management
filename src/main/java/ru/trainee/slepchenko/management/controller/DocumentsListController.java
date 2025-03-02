@@ -22,6 +22,7 @@ import ru.trainee.slepchenko.management.model.PaymentRequest;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 public class DocumentsListController {
@@ -66,6 +67,11 @@ public class DocumentsListController {
     }
 
     @FXML
+    void initialize() {
+        loadDocumentsFromDB();
+    }
+
+    @FXML
     void exitApp(ActionEvent event) {
         System.exit(0);
     }
@@ -99,7 +105,13 @@ public class DocumentsListController {
         String filePath = chooseFileSave();
         if (filePath != null) {
             documentDto.save(filePath);
+            saveToDB();
         }
+    }
+
+    private void saveToDB() {
+        DocumentHbnDto documentHbnDto = new DocumentHbnDto();
+        documentHbnDto.saveDocuments(documentDto.getDocuments());
     }
 
     @FXML
@@ -237,6 +249,15 @@ public class DocumentsListController {
     public void returnToDocumentList() {
         leftContainer.getChildren().clear();
         leftContainer.getChildren().add(documentsList);
+    }
+
+    private void loadDocumentsFromDB() {
+        DocumentHbnDto documentHbnDto = new DocumentHbnDto();
+        List<Object> documents = documentHbnDto.loadDocuments();
+
+        for (Object doc : documents) {
+            addDocumentToList(doc);
+        }
     }
 
 }
