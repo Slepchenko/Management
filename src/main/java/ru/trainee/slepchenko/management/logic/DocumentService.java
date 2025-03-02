@@ -1,13 +1,12 @@
 package ru.trainee.slepchenko.management.logic;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
 import ru.trainee.slepchenko.management.model.Invoice;
 import ru.trainee.slepchenko.management.model.Payment;
 import ru.trainee.slepchenko.management.model.PaymentRequest;
 
 import java.time.LocalDate;
 
-public class SerializeDocumentsService {
+public class DocumentService {
 
     public static String serializeDocument(Object doc) {
         if (doc instanceof Invoice invoice) {
@@ -53,10 +52,9 @@ public class SerializeDocumentsService {
         String[] fields = docLine.split("\\|");
         if (fields.length > 1) {
             LocalDate date = LocalDate.parse(fields[2]);
-
             try {
                 switch (fields[0]) {
-                    case "INVOICE":
+                    case "INVOICE" -> {
                         Invoice invoice = new Invoice();
                         invoice.setNumber(fields[1]);
                         invoice.setDate(date);
@@ -67,7 +65,8 @@ public class SerializeDocumentsService {
                         invoice.setProduct(fields[7]);
                         invoice.setProduct(fields[8]);
                         return invoice;
-                    case "PAYMENT":
+                    }
+                    case "PAYMENT" -> {
                         Payment payment = new Payment();
                         payment.setNumber(fields[1]);
                         payment.setDate(date);
@@ -75,7 +74,8 @@ public class SerializeDocumentsService {
                         payment.setAmount(Double.parseDouble(fields[4]));
                         payment.setEmployee(fields[5]);
                         return payment;
-                    case "PAYMENT_REQUEST":
+                    }
+                    case "PAYMENT_REQUEST" -> {
                         PaymentRequest paymentRequest = new PaymentRequest();
                         paymentRequest.setNumber(fields[1]);
                         paymentRequest.setDate(date);
@@ -86,12 +86,26 @@ public class SerializeDocumentsService {
                         paymentRequest.setExchangeRate(Double.parseDouble(fields[7]));
                         paymentRequest.setCommission(Double.parseDouble(fields[8]));
                         return paymentRequest;
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         return null;
+    }
+
+    public static String getDocumentText(Object doc) {
+        if (doc instanceof Invoice invoice) {
+            return "Накладная от " + invoice.getDate() + " номер " + invoice.getNumber();
+        }
+        if (doc instanceof Payment payment) {
+            return "Платёжка от " + payment.getDate() + " номер " + payment.getNumber();
+        }
+        if (doc instanceof PaymentRequest request) {
+            return "Заявка на оплату от " + request.getDate() + " номер " + request.getNumber();
+        }
+        return "";
     }
 
 }

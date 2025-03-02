@@ -1,19 +1,11 @@
 package ru.trainee.slepchenko.management.dto;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import ru.trainee.slepchenko.management.logic.SerializeDocumentsService;
-import ru.trainee.slepchenko.management.model.Invoice;
-import ru.trainee.slepchenko.management.model.Payment;
-import ru.trainee.slepchenko.management.model.PaymentRequest;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ListView;
+import ru.trainee.slepchenko.management.logic.DocumentService;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DocumentDto {
 
@@ -37,7 +29,7 @@ public class DocumentDto {
         }
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             for (Object doc : documents) {
-                writer.write(SerializeDocumentsService.serializeDocument(doc));
+                writer.write(DocumentService.serializeDocument(doc));
                 writer.newLine();
             }
         } catch (IOException e) {
@@ -58,7 +50,7 @@ public class DocumentDto {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                Object document = SerializeDocumentsService.deserializeDocument(line);
+                Object document = DocumentService.deserializeDocument(line);
                 if (document != null) {
                     documents.add(document);
                 }
@@ -68,20 +60,17 @@ public class DocumentDto {
         }
     }
 
-    public void delete(Map<String, List<?>> delDocs) {
-
+    public void delete(ListView<CheckBox> documentsList) {
+        List<CheckBox> selectedCheckBox = new ArrayList<>();
+        List<String> selectedDocs = new ArrayList<>();
+        for (CheckBox checkBox : documentsList.getItems()) {
+            if (checkBox.isSelected()) {
+                selectedDocs.add(checkBox.getText());
+                selectedCheckBox.add(checkBox);
+            }
+        }
+        documentsList.getItems().removeAll(selectedCheckBox);
+        getDocuments().removeIf(doc -> selectedDocs.contains(DocumentService.getDocumentText(doc)));
     }
-
-//    private Map<String, List<?>> newInitDocument() {
-////        return Map.of(
-////                "INVOICE", new ArrayList<Invoice>(),
-////                "PAYMENT", new ArrayList<Payment>(),
-////                "PAYMENT_REQUEST", new ArrayList<PaymentRequest>());
-//        Map<String, List<?>> initDocs = new HashMap<>();
-//        initDocs.put("INVOICE", new ArrayList<Invoice>());
-//        initDocs.put("PAYMENT", new ArrayList<Payment>());
-//        initDocs.put("PAYMENT_REQUEST", new ArrayList<PaymentRequest>());
-//        return initDocs;
-//    }
 
 }

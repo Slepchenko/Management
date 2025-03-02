@@ -1,19 +1,26 @@
 package ru.trainee.slepchenko.management.controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import ru.trainee.slepchenko.management.dto.DocumentDto;
+import ru.trainee.slepchenko.management.logic.DocumentInfo;
+import ru.trainee.slepchenko.management.logic.DocumentService;
 import ru.trainee.slepchenko.management.model.Invoice;
 import ru.trainee.slepchenko.management.model.Payment;
 import ru.trainee.slepchenko.management.model.PaymentRequest;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Objects;
 
 public class DocumentsListController {
@@ -24,7 +31,7 @@ public class DocumentsListController {
     private Button deleteButton;
 
     @FXML
-    private ListView<String> documentsList;
+    private ListView<CheckBox> documentsList;
 
     @FXML
     private Button invoiceButton;
@@ -47,20 +54,17 @@ public class DocumentsListController {
     @FXML
     private Button viewButton;
 
-    private DocumentDto documentDto = new DocumentDto();
+    private final DocumentDto documentDto = new DocumentDto();
+
+    private final ObservableList<CheckBox> documentItems = FXCollections.observableArrayList();
 
     public DocumentDto getDocumentDto() {
         return documentDto;
     }
 
     @FXML
-    void deleteSelected(ActionEvent event) {
-
-    }
-
-    @FXML
     void exitApp(ActionEvent event) {
-
+        System.exit(0);
     }
 
     @FXML
@@ -96,51 +100,43 @@ public class DocumentsListController {
     }
 
     @FXML
+    void deleteSelected(ActionEvent event) {
+        documentDto.delete(documentsList);
+    }
+
+    @FXML
     void viewDocument(ActionEvent event) {
 
     }
 
-    public ListView<String> getDocumentsList() {
+    public ListView<CheckBox> getDocumentsList() {
         return documentsList;
     }
 
     public void addInvoiceToList(Invoice invoice) {
         documentDto.add(invoice);
-        if (documentsList != null) {
-            documentsList.getItems().add("Накладная от "
-                    + invoice.getDate()
-                    + " номер "
-                    + invoice.getNumber());
-            refreshDocumentsList();
-        }
+        CheckBox checkBox = new CheckBox(DocumentService.getDocumentText(invoice));
+        documentItems.add(checkBox);
+        documentsList.setItems(documentItems);
     }
 
     public void addPaymentToList(Payment payment) {
         documentDto.add(payment);
-        if (documentsList != null) {
-            documentsList.getItems().add("Платёжка от "
-                    + payment.getDate()
-                    + " номер "
-                    + payment.getNumber());
-            refreshDocumentsList();
-        }
+        CheckBox checkBox = new CheckBox(DocumentService.getDocumentText(payment));
+        documentItems.add(checkBox);
+        documentsList.setItems(documentItems);
     }
 
     public void addPaymentRequestToList(PaymentRequest paymentRequest) {
         documentDto.add(paymentRequest);
-        if (documentsList != null) {
-            documentsList.getItems().add("Заявка на оплату от "
-                    + paymentRequest.getDate()
-                    + " номер "
-                    + paymentRequest.getNumber());
-            refreshDocumentsList();
-        }
+        CheckBox checkBox = new CheckBox(DocumentService.getDocumentText(paymentRequest));
+        documentItems.add(checkBox);
+        documentsList.setItems(documentItems);
     }
 
     public void refreshDocumentsList() {
         documentsList.refresh();
     }
-
 
     private void loadForm(String path, String documentType) {
         try {
@@ -165,26 +161,26 @@ public class DocumentsListController {
     }
 
     private void updateDocumentsList() {
-        documentsList.getItems().clear();
-
+        documentItems.clear();
         for (Object doc : documentDto.getDocuments()) {
-            if (doc instanceof Invoice invoice) {
-                documentsList.getItems().add("Накладная от " + invoice.getDate() + " номер " + invoice.getNumber());
-            }
-            if (doc instanceof Payment payment) {
-                documentsList.getItems().add("Платёжка от " + payment.getDate() + " номер " + payment.getNumber());
-            }
-            if (doc instanceof PaymentRequest paymentRequest) {
-                documentsList.getItems().add("Заявка на оплату от " + paymentRequest.getDate() + " номер " + paymentRequest.getNumber());
-            }
+            CheckBox checkBox = new CheckBox(DocumentService.getDocumentText(doc));
+            checkBox.setFocusTraversable(false);
+
+            checkBox.setOnMouseClicked(event -> {
+                if (event.getTarget() instanceof Text) {
+                    documentInfo(findDocumentByText(checkBox.getText()));
+                }
+            });
+            documentItems.add(checkBox);
         }
+        documentsList.setItems(documentItems);
+
     }
 
     private String chooseFileSave() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Выберите папку");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Текстовые файлы", "*.txt"));
-
         File selectedFile = fileChooser.showSaveDialog(new Stage());
         return (selectedFile != null) ? selectedFile.getAbsolutePath() : null;
     }
@@ -193,9 +189,56 @@ public class DocumentsListController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Выберите файл");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Текстовые файлы", "*.txt"));
-
         File selectedFile = fileChooser.showOpenDialog(new Stage());
         return (selectedFile != null) ? selectedFile.getAbsolutePath() : null;
+    }
+
+    @FXML
+    void initialize() {
+        documentsList.setOnMouseClicked(event -> {
+            CheckBox selectedCheckBox = documentsList.getSelectionModel().getSelectedItem();
+            if (selectedCheckBox != null) {
+                String selectedText = selectedCheckBox.getText();
+                Object selectedDocument = findDocumentByText(selectedText);
+                if (selectedDocument != null) {
+                    documentInfo(selectedDocument);
+                }
+            }
+        });
+    }
+
+    private Object findDocumentByText(String text) {
+        for (Object doc : documentDto.getDocuments()) {
+            if (DocumentService.getDocumentText(doc).equals(text)) {
+                return doc;
+            }
+        }
+        return null;
+    }
+
+    private void documentInfo(Object doc) {
+        if (doc == null) {
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/documentInfo.fxml"));
+            VBox infoBox = loader.load();
+            DocumentInfoController controller = loader.getController();
+
+            controller.setDocumentsListController(this);
+            controller.setDocumentDetails(DocumentInfo.getDocumentInfo(doc));
+
+            leftContainer.getChildren().clear();
+            leftContainer.getChildren().add(infoBox);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void returnToDocumentList() {
+        leftContainer.getChildren().clear();
+        leftContainer.getChildren().add(documentsList);
     }
 
 }

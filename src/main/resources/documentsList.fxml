@@ -8,7 +8,11 @@
 
 <?import javafx.scene.layout.Region?>
 <?import javafx.geometry.Insets?>
-<AnchorPane prefHeight="600.0" prefWidth="530.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.trainee.slepchenko.management.controller.DocumentsListController">
+<AnchorPane prefHeight="600.0"
+            prefWidth="530.0"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ru.trainee.slepchenko.management.controller.DocumentsListController">
 
     <StackPane fx:id="leftContainer"
                AnchorPane.topAnchor="10"
